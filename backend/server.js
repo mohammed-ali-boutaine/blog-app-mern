@@ -1,6 +1,5 @@
 // labraries umport
 import express from 'express';
-import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
@@ -8,10 +7,13 @@ import cookieParser from 'cookie-parser';
 // fils inmport
 import connectDB from './config/db.js';
 import blogRoutes from './routes/blogRoutes.js';
+import userRoutes from './routes/userRoutes.js';
+// import {userR}
 import {errorHandler ,notFound} from "./middlewares/errorMiddleware.js"
 
 // midlewares
 const app = express();
+
 app.use(cookieParser());
 
 app.use(express.json());
