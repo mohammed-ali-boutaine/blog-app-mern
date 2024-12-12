@@ -1,6 +1,9 @@
-import User from "../models/user.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import asyncHandler from 'express-async-handler';
+
+import User from "../models/userModel.js"
+
 
 export const isAuthenticated = (req, res, next) => {
     const token = req.cookies.token;

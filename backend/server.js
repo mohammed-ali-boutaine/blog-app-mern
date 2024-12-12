@@ -3,6 +3,7 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 
 // fils inmport
 import connectDB from './config/db.js';
@@ -16,12 +17,11 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(cors());
 
-
-const port = process.env.PORT || 5000;
 dotenv.config();
 
-// db connecton 
-connectDB()
+const port = process.env.PORT || 5000;
+
+
 
 
 
@@ -36,6 +36,9 @@ app.use('/api/users', userRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
+
+// db connecton 
+connectDB()
 
 // Server start
 app.listen(port, () => {
