@@ -1,28 +1,16 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import asyncHandler from 'express-async-handler';
 
 import User from "../models/userModel.js"
 
 
-export const isAuthenticated = (req, res, next) => {
-    const token = req.cookies.token;
 
-    if (!token) {
-        return res.status(401).json({ message: "Token not provided" });
-    }
-
-    jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
-        if (err) {
-            return res.status(401).json({ message: "Invalid token" });
-        }
-
-        req.user = decoded; 
-        next();
-    });
-};
-
+// @desc    Register a new user 
+// @route   POST /api/users/register
+// @access  Public
 export const registerUser = async (req, res) => {
+    console.log(req.body);
+    
     try {
         const { username, password, email } = req.body;
 
@@ -60,20 +48,27 @@ export const registerUser = async (req, res) => {
     }
 };
 
+
+
+
+
+// @desc    Auth user & get token
+// @route   POST /api/users/login
+// @access  Public
 export const loginUser = async (req, res) => {
     try {
-        const { username, password } = req.body;
+        const { email, password } = req.body;
 
         // Find user by username
-        const user = await User.findOne({ username });
+        const user = await User.findOne({ email });
         if (!user) {
-            return res.status(401).json({ error: "Authentication failed" });
+            return res.status(401).json({ error: "user not found" });
         }
 
         // Verify password
         const passwordMatch = await bcrypt.compare(password, user.password);
         if (!passwordMatch) {
-            return res.status(401).json({ error: "Authentication failed" });
+            return res.status(401).json({ error: "wrong password" });
         }
 
         // Create JWT token
@@ -99,6 +94,39 @@ export const loginUser = async (req, res) => {
     }
 };
 
+
+
+
+
+// @desc    Get user profile (based on id from request)
+// @route   GET /api/users/profile
+// @access  Private
+export const getUserProfile = async (req, res, next) => {
+    // Find user by ID and exclude password field
+    const user = await User.findById(req.user._id).select('-password');
+  
+    // If user is found, respond with user details
+    if (user) {
+      res.json({
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+      });
+    } else {
+      res.status(404); // Set status to Not Found
+      return next(new Error('User not found')); // Pass error to error-handling middleware
+    }
+  };
+
+// @desc    Update user profil 
+// @route   PUT /api/users/profile
+// @access  Public
+
+
+
+// @desc    Logout (delete token)
+// @route   POST /api/users/logout
+// @access  Private
 export const logoutUser = (req, res) => {
     res.cookie("token", "", {
         httpOnly: true,

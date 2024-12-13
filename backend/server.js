@@ -32,7 +32,9 @@ const port = process.env.PORT || 5000;
 app.use('/api/blogs', blogRoutes);
 app.use('/api/users', userRoutes);
 
-
+// app.use("/",(req,res)=>{
+//     res.send("connected")
+// })
 
 // Error Handling Middleware
 app.use(notFound);

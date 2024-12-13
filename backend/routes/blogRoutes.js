@@ -1,5 +1,5 @@
 import express from 'express';
-import { createPost, updatePost, deletePost } from '../controllers/postController.js'
+import { createPost, updatePost, deletePost, getPosts } from '../controllers/postController.js'
 
 const blogRouter = express.Router();
 
@@ -12,6 +12,7 @@ const blogRouter = express.Router();
 // });
 
 //route postBlog
+blogRouter.get('/' , getPosts );
 blogRouter.post('/createPost' , createPost );
 blogRouter.put("/:postId", updatePost);
 blogRouter.delete("/:postId", deletePost);

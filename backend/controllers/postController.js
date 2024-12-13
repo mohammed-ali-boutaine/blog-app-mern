@@ -1,5 +1,24 @@
 import Post from "../models/postModel.js";
 
+
+// @desc    Get all posts
+// @route   GET /api/posts
+// @access  Private
+export const getPosts = async (req,res)=>{
+    try{
+
+        const posts = await Post.find().sort({ date: -1 })
+        res.status(200).json(posts)
+
+    }catch(e){
+        res.status(501).json({"message":e.message});
+
+    }
+}
+
+// @desc    Create a new post
+// @route   POST /api/posts
+// @access  Private
 export const createPost = async (req, res) => {
     try {
         console.log(req.user);
@@ -83,3 +102,32 @@ export const deletePost = async (req, res) => {
         res.status(500).json({ message: "Failed to delete post.", error: error.message });
     }
 };
+
+
+
+
+
+
+// @desc    Add a comment
+// @route   POST /api/posts/:id/comments
+// @access  Private
+export const addComment = async (req, res) => {
+    const { text } = req.body;
+  
+    const post = await Post.findById(req.params.id);
+  
+    if (post) {
+      const comment = {
+        text,
+        user: req.user._id,
+      };
+  
+      post.comments.push(comment);
+      await post.save();
+  
+      res.status(201).json(post);
+    } else {
+      res.status(404);
+      throw new Error('Post not found');
+    }
+  };
