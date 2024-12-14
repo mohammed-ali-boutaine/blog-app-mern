@@ -8,7 +8,6 @@ import cookieParser from 'cookie-parser';
 import connectDB from './config/db.js';
 import blogRoutes from './routes/blogRoutes.js';
 import userRoutes from './routes/userRoutes.js';
-// import {userR}
 import {errorHandler ,notFound} from "./middlewares/errorMiddleware.js"
 
 // midlewares

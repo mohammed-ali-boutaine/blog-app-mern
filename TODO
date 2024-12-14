@@ -1,8 +1,9 @@
 
 Todo:
-  ☐ create edit user controller
+  ✔ create edit user controller @done(24-12-14 15:49)
   ☐ validation for form
   ☐ learn more about cookies
-  ☐ lern more about axpress and express-async-handler
+  ☐ lern more about axpress and express-async-handler , express-validator ,express-rate-limit
   ☐ make user controller more readble
+  ☐ make user c
 

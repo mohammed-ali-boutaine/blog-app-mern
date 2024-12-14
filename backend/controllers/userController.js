@@ -120,8 +120,39 @@ export const getUserProfile = async (req, res, next) => {
 
 // @desc    Update user profil 
 // @route   PUT /api/users/profile
-// @access  Public
+// @access  Private
+export const updateUser = async (req,res)=>{
 
+
+
+      // Check if req.user._id is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(req.user._id)) {
+        return res.status(400).json({ message: "Invalid user ID" });
+    }
+
+    const user = await User.findById(req.user._id);
+
+    if(!user){
+        return res.status(404).json({"message":"user not found"})
+    }
+
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+
+    if (req.body.password) {
+      user.password = req.body.password;
+    }
+
+    const updatedUser = await user.save();
+
+    res.json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+    })
+
+
+}
 
 
 // @desc    Logout (delete token)
