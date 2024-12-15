@@ -9,7 +9,7 @@ const PostSchema = new mongoose.Schema({
     required: true,
   },
   title: { type: String, required: true },
-  text: { type: String, required: true },
+  content: { type: String, required: true },
   comments: [
     {
       userId: {

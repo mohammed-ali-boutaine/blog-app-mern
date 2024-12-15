@@ -4,6 +4,7 @@ import User from '../models/userModel.js';
 
 const protect = asyncHandler(async (req, res, next) => {
   let token = req.cookies.token;
+console.log("token",token);
 
   if (!token) {
     return res.status(401).json({ message: "Not authorized, no token" });
@@ -13,7 +14,7 @@ const protect = asyncHandler(async (req, res, next) => {
       const decoded = jwt.verify(token, process.env.SECRET_KEY);
 
       req.user = await User.findById(decoded.userId).select('-password');
-
+      
       next();
     } catch (error) {
       console.error(error);

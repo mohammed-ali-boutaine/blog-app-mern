@@ -1,5 +1,6 @@
 import express from 'express';
 import { createPost, updatePost, deletePost, getPosts } from '../controllers/postController.js'
+import { protect } from '../middlewares/authMiddleware.js';
 
 const blogRouter = express.Router();
 
@@ -13,13 +14,12 @@ const blogRouter = express.Router();
 
 //route postBlog
 blogRouter.get('/' , getPosts );
-blogRouter.post('/createPost' , createPost );
-blogRouter.put("/:postId", updatePost);
-blogRouter.delete("/:postId", deletePost);
+blogRouter.post('/createPost' ,protect, createPost );
+blogRouter.put("/:postId",protect, updatePost);
+blogRouter.delete("/:postId",protect, deletePost);
 // blogRouter.post('/createPost',isAuthenticated , createPost );
 // blogRouter.put("/:postId", isAuthenticated, updatePost);
 // routblogRouterer.delete("/:postId", isAuthenticated, deletePost);
-
 
 
 

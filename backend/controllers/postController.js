@@ -21,12 +21,12 @@ export const getPosts = async (req,res)=>{
 // @access  Private
 export const createPost = async (req, res) => {
     try {
-        console.log(req.user);
         const { title, content } = req.body;
+        console.log(req.user);
 
         // Get userId from isAuthenticated middleware
-        const author = req.user.userId; // Assuming the token contains the user's id in the payload
-        console.log(author);
+        const author = req.user._id; 
+        // console.log(author);
         if (!title || !content) {
             return res.status(400).json({ message: "Title and content are required." });
         }
@@ -53,7 +53,7 @@ export const updatePost = async (req, res) => {
     try {
         const { postId } = req.params;
         const { title, content } = req.body;
-        const userId = req.user.userId;
+        const userId = req.user._id;
 
         const post = await Post.findById(postId);
 

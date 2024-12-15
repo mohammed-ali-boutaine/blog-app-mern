@@ -9,7 +9,6 @@ import User from "../models/userModel.js"
 // @route   POST /api/users/register
 // @access  Public
 export const registerUser = async (req, res) => {
-    console.log(req.body);
     
     try {
         const { username, password, email } = req.body;
@@ -56,10 +55,12 @@ export const registerUser = async (req, res) => {
 // @route   POST /api/users/login
 // @access  Public
 export const loginUser = async (req, res) => {
-    try {
-        const { email, password } = req.body;
 
-        // Find user by username
+
+    try {
+
+        let {email,password} = req.body
+        // Find user by email
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(401).json({ error: "user not found" });
@@ -124,6 +125,7 @@ export const getUserProfile = async (req, res, next) => {
 export const updateUser = async (req,res)=>{
 
 
+    try {
 
       // Check if req.user._id is a valid ObjectId
     if (!mongoose.Types.ObjectId.isValid(req.user._id)) {
@@ -140,7 +142,8 @@ export const updateUser = async (req,res)=>{
     user.email = req.body.email || user.email;
 
     if (req.body.password) {
-      user.password = req.body.password;
+        const hashedPassword = await bcrypt.hash(req.body.password,10)
+      user.password = hashedPassword;
     }
 
     const updatedUser = await user.save();
@@ -150,7 +153,10 @@ export const updateUser = async (req,res)=>{
       name: updatedUser.name,
       email: updatedUser.email,
     })
-
+} catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
 
 }
 
